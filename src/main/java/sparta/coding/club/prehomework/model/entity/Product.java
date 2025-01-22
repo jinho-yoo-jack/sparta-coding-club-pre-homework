@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sparta.coding.club.prehomework.model.dto.LowestProduct;
+import sparta.coding.club.prehomework.model.dto.DisplayProduct;
 import sparta.coding.club.prehomework.repository.CategoryConverter;
 
 import java.math.*;
@@ -32,8 +32,8 @@ public class Product {
     private Brand brand;
 
 
-    public LowestProduct toLowestProduct() {
-        return LowestProduct.builder()
+    public DisplayProduct toLowestProduct() {
+        return DisplayProduct.builder()
                 .category(category.getDisplayName())
                 .brandName(brand.getName())
                 .price(addComma(price))

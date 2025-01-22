@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LowestProduct {
+public class DisplayProduct {
     private String category;
     private String brandName;
     private String price;

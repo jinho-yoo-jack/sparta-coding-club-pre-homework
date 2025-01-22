@@ -1,4 +1,16 @@
-### GET request to example server
-GET http://localhost:9999/lowest-products-by-category
-
+### API#1 Lowest All-Products Group by category
+GET http://localhost:9999/api/product/v1/lowest-products-by-category
 ###
+
+### API#2 Lowest Price Group by Brand using JPA
+GET http://localhost:9999/api/product/v1/lowest-price-by-brand
+###
+
+### API#2 Lowest Price Group by Brand using Jdbc Native Query
+GET http://localhost:9999/api/product/v2/lowest-price-by-brand
+###
+
+GET http://localhost:9999/api/product/v1/min-max-price-by-category?category=상의
+
+
+

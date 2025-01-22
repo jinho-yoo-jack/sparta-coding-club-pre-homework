@@ -5,5 +5,6 @@ import lombok.Data;
 
 @Data
 @Builder
-public class RespOneCategoryProducts {
+public class RespLowestPrice {
+    private SingleBrandLowestPrice lowestPrice;
 }
