@@ -43,6 +43,14 @@ public class ProductServiceTests {
     }
 
     @Test
+    void searchMinimumPriceBrand() {
+        List<Product> allProducts = productRepository.findAll();
+        Map<String, List<Product>> r = allProducts.stream().collect(
+                Collectors.groupingBy(i -> i.getBrand().getName()));
+        r.entrySet().stream().map(Map.Entry::getValue).flatMap(List::stream).forEach(System.out::println);
+    }
+
+    @Test
     void totalPrice() {
         List<Product> allProducts = productRepository.findAll();
         Map<String, Product> filteredProducts = allProducts.stream()
@@ -61,8 +69,4 @@ public class ProductServiceTests {
         Assertions.assertTrue(totalPrice.compareTo(BigDecimal.valueOf(34_100)) == 0);
     }
 
-    @Test
-    void searchMinimumPriceBrand() {
-        List<Product> allProducts = productRepository.findAll();
-    }
 }
