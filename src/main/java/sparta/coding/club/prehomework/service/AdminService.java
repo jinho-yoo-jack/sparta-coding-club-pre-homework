@@ -12,6 +12,7 @@ import sparta.coding.club.prehomework.model.entity.Product;
 import sparta.coding.club.prehomework.repository.BrandRepository;
 import sparta.coding.club.prehomework.repository.ProductRepository;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.Instant;
 import java.util.Date;
@@ -58,6 +59,24 @@ public class AdminService {
 
         return RespUpdateProduct.of(productRepository.findByCategoryAndBrandId(Category.fromDisplayName(productInfo.getCategory()), afterBrandId)
                 .orElseThrow(() -> new FailInsertToPersistence("Fail Add New Product")));
+    }
+
+    @Transactional
+    public RespUpdateProduct updateProductV2(ReqModifyProduct productInfo) {
+        Product prevProduct = productRepository.findById(productInfo.getProductId())
+                .orElseThrow(() -> new NoSuchElementException("Product Not Found"));
+
+        Product afterProduct = Product.builder()
+                .id(prevProduct.getId())
+                .category(Category.fromDisplayName(productInfo.getCategory()))
+                .name(productInfo.getProductName())
+                .brand(prevProduct.getBrand().getName().equals(productInfo.getBrandName()) ? prevProduct.getBrand() :
+                        brandRepository.findByName(productInfo.getProductName().toUpperCase()).orElseThrow(() -> new NoSuchElementException("Not brand")))
+                .price(BigDecimal.valueOf(productInfo.getPrice()))
+                .build();
+
+        productRepository.save(afterProduct);
+        return RespUpdateProduct.of(afterProduct);
     }
 
     public RespDeletedProduct deleteProduct(BigInteger id) {

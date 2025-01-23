@@ -33,6 +33,11 @@ public class AdminController {
         return ResponseEntity.ok(adminService.updateProduct(productInfo));
     }
 
+    @PostMapping("/v2/modify/product")
+    public ResponseEntity<RespUpdateProduct> modifyProductV2(@RequestBody ReqModifyProduct productInfo) {
+        return ResponseEntity.ok(adminService.updateProductV2(productInfo));
+    }
+
     @PostMapping("/v1/delete/product")
     public ResponseEntity<RespDeletedProduct> deleteProduct(@RequestParam BigInteger productId) {
         return ResponseEntity.ok(adminService.deleteProduct(productId));
