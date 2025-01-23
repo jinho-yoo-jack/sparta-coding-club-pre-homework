@@ -1,0 +1,36 @@
+### POST request to example server
+POST http://localhost:9999/api/admin/v1/create/brand
+Content-Type: application/json
+
+{
+  "brand_name": "J"
+}
+
+###
+
+### POST request to example server
+POST http://localhost:9999/api/admin/v1/create/product
+Content-Type: application/json
+
+{
+  "brand_name": "J",
+  "category": "상의",
+  "product_name": "상의",
+  "price": 10000
+}
+
+###
+
+### POST request to example server
+POST http://localhost:9999/api/admin/v1/modify/product
+Content-Type: application/json
+
+{
+  "product_id": 73,
+  "brand_name": "J",
+  "category": "바지",
+  "product_name": "바지",
+  "price": 500
+}
+
+###

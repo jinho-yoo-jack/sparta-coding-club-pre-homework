@@ -1,0 +1,24 @@
+package sparta.coding.club.prehomework.model.dto;
+
+import lombok.Builder;
+import lombok.Data;
+import sparta.coding.club.prehomework.config.BigDecimalUtils;
+import sparta.coding.club.prehomework.model.entity.Product;
+
+@Data
+@Builder
+public class RespDeletedProduct {
+    private String brandName;
+    private String category;
+    private String productName;
+    private String price;
+
+    public static RespDeletedProduct of(Product p){
+        return RespDeletedProduct.builder()
+                .brandName(p.getBrand().getName())
+                .category(p.getCategory().getDisplayName())
+                .productName(p.getName())
+                .price(BigDecimalUtils.addComma(p.getPrice()))
+                .build();
+    }
+}

@@ -14,8 +14,9 @@ public class JdbcProductRepositoryTests {
     private JdbcProductRepository jdbcProductRepository;
 
     @Test
-    void getBrandIdTests(){
+    void getBrandIdTest(){
         BigInteger brandId = jdbcProductRepository.findBrandIdByMinPriceGroupByBrand();
         System.out.println(brandId);
     }
+
 }

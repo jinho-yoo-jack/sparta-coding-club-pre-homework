@@ -8,11 +8,13 @@ CREATE TABLE IF NOT EXISTS brand
 -- product 테이블 생성
 CREATE TABLE IF NOT EXISTS product
 (
-    id       BIGINT PRIMARY KEY AUTO_INCREMENT,
-    brand_id BIGINT         NOT NULL,
-    category VARCHAR(50)    NOT NULL,
-    name     VARCHAR(100)   NOT NULL,
-    price    DECIMAL(10, 2) NOT NULL,
+    id         BIGINT PRIMARY KEY AUTO_INCREMENT,
+    brand_id   BIGINT                 NOT NULL,
+    category   VARCHAR(50)            NOT NULL,
+    name       VARCHAR(100)           NOT NULL,
+    price      DECIMAL(10, 2)         NOT NULL,
+    created_at DATETIME DEFAULT NOW() NOT NULL,
+    deleted_at DATETIME               NULL,
     FOREIGN KEY (brand_id) REFERENCES brand (id)
 );
 
