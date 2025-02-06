@@ -11,6 +11,7 @@ import sparta.coding.club.prehomework.repository.ProductRepository;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -73,9 +74,12 @@ public class ProductServiceTests {
                 )
             ));
 
-        BigDecimal totalPrice = filteredProducts.entrySet().stream().map(Map.Entry::getValue)
+        Function<Map.Entry<String, Product>, Product> execute = m -> m.getValue();
+        Function<Map.Entry<String, Product>, Product> execute1 = Map.Entry::getValue;
+        BigDecimal totalPrice = filteredProducts.entrySet().stream().map(execute)
             .map(Product::getPrice)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
+
 
         Assertions.assertTrue(totalPrice.compareTo(BigDecimal.valueOf(34_100)) == 0);
     }
@@ -85,7 +89,6 @@ public class ProductServiceTests {
         List<Product> filteredProducts = productRepository.findAllByCategory(Category.TOP);
         Product min = filteredProducts.stream().min((p1, p2) -> p1.getPrice().compareTo(p2.getPrice())).orElseThrow();
         Product max = filteredProducts.stream().max((p1, p2) -> p1.getPrice().compareTo(p2.getPrice())).orElseThrow();
-
         Assertions.assertTrue(min.getPrice().compareTo(BigDecimal.valueOf(10_000)) == 0);
         Assertions.assertTrue("C".equals(min.getBrand().getName().toUpperCase()));
     }

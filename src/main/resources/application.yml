@@ -1,8 +1,15 @@
 server:
   port: 9999
+
 spring:
-  #  profiles:
-  #    active: dev
+    profiles:
+      active: dev
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
 
   datasource:
     hikari:
@@ -16,8 +23,8 @@ spring:
   sql:
     init:
       mode: always
-      schema-locations: classpath:init-schema.sql
-      data-locations: classpath:init-data.sql
+      schema-locations: classpath:/init-db/init-schema.sql
+      data-locations: classpath:/init-db/init-data.sql
   h2:
     console:
       enabled: true
