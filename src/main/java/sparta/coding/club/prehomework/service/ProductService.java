@@ -26,7 +26,7 @@ public class ProductService {
     public RespLowestProduct fetchLowerProductByCategory() {
         RespLowestProduct response = new RespLowestProduct();
         List<Product> allProducts = productRepository.findAll();
-        Map<String, Product> filteredProducts = findLowestProductByCategory(allProducts);
+        Map<String, Product> filteredProducts = findLowestPriceByCategory(allProducts);
         List<DisplayProduct> displayProducts = filteredProducts.entrySet().stream().map(Map.Entry::getValue)
                 .map(Product::toLowestProduct)
                 .toList();
@@ -41,7 +41,7 @@ public class ProductService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private Map<String, Product> findLowestProductByCategory(List<Product> allProducts) {
+    private Map<String, Product> findLowestPriceByCategory(List<Product> allProducts) {
         return allProducts.stream()
                 .collect(Collectors.groupingBy(
                         it -> it.getCategory().getDisplayName(),

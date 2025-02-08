@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLRestriction;
 import sparta.coding.club.prehomework.model.dto.DisplayProduct;
-import sparta.coding.club.prehomework.repository.CategoryConverter;
 
 import java.math.*;
 import java.util.Date;

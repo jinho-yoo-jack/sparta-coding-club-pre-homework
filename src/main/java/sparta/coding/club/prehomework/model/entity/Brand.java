@@ -21,4 +21,8 @@ public class Brand {
         this.name = name;
     }
 
+    public Brand(BigInteger id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

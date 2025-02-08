@@ -1,5 +1,6 @@
 package sparta.coding.club.prehomework.repository;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -13,9 +14,10 @@ public class ProductRepositoryTests {
     private ProductRepository productRepository;
 
     @Test
-    void findAllByDeletedAtIsNullTest(){
+    void findAll_OnlyDeletedAtIsNotNull_True(){
         List<Product> allProducts = productRepository.findAll();
-        System.out.println(allProducts.size());
+        long count = allProducts.stream().filter(product -> product.getDeletedAt() != null).count();
+        Assertions.assertEquals(0, count);
 
     }
 }

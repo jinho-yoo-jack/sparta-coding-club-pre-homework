@@ -12,6 +12,7 @@ GET http://localhost:9999/api/product/v2/lowest-price-by-brand
 
 ### 상품 최저가/최대가 조회 API
 GET http://localhost:9999/api/product/v1/min-max-price-by-category?category=
+#GET http://localhost:9999/api/product/v1/min-max-price-by-category?category=상의
 
 ### 상품 가격 및 카테고리 수정 후, 결과 확인
 GET http://localhost:9999/api/product/v1/min-max-price-by-category?category=바지
