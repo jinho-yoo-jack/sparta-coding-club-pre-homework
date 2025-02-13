@@ -1,8 +1,7 @@
-package sparta.coding.club.prehomework.repository;
+package sparta.coding.club.prehomework.model.entity;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import sparta.coding.club.prehomework.model.entity.Category;
 
 @Converter(autoApply = true)
 public class CategoryConverter implements AttributeConverter<Category, String> {

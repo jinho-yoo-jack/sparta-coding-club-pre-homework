@@ -3,25 +3,26 @@ package sparta.coding.club.prehomework.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import sparta.coding.club.prehomework.model.entity.Brand;
 import sparta.coding.club.prehomework.model.entity.Category;
 import sparta.coding.club.prehomework.model.entity.Product;
 import sparta.coding.club.prehomework.repository.ProductRepository;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Comparator;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@SpringBootTest
-public class ProductServiceTests {
+@DataJpaTest
+public class ProductUnitTests {
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private ProductService productService;
 
     @Test
     void findAll() {
@@ -30,7 +31,7 @@ public class ProductServiceTests {
     }
 
     @Test
-    void findLowestPriceByCategory() {
+    void findLowestPriceByCategory_IncludeProductId48_True() {
         List<Product> allProducts = productRepository.findAll();
         Map<String, Product> result = allProducts.stream()
             .collect(groupingBy(
@@ -40,54 +41,52 @@ public class ProductServiceTests {
                     opt -> opt.orElse(null) // 상품이 없는 경우 Null
                 )
             ));
-        Assertions.assertFalse(result.isEmpty());
+        Product actual = result.get("액세서리");
+        Product expected = new Product(BigInteger.valueOf(48), Category.ACCESSORY, "ACCESSORY", new BigDecimal("1900.00"), new Brand(BigInteger.valueOf(6), "F"), null);
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+
     }
 
     @Test
-    void searchMinimumPriceBrand() {
+    void findLowestPriceByBrand_ReturnBrandIsD_True() {
         List<Product> allProducts = productRepository.findAll();
         Map<String, BigDecimal> r = allProducts.stream().collect(
             Collectors.groupingBy(i -> i.getBrand().getName(),
-                Collectors.reducing(BigDecimal.ZERO, Product::getPrice, BigDecimal::add)));
-        Map.Entry<String, BigDecimal> r1 =  Collections.min(r.entrySet(), Comparator.comparing(Map.Entry::getValue));
-        System.out.println(r1.getKey());
-        System.out.println(r1.getValue());
+                Collectors.reducing(BigDecimal.ZERO, Product::getPrice, BigDecimal::add))
+        );
+        Map.Entry<String, BigDecimal> actual = Collections.min(r.entrySet(), Comparator.comparing(Map.Entry::getValue));
+        Map.Entry<String, BigDecimal> expected =
+            new AbstractMap.SimpleEntry<String, BigDecimal>("D", new BigDecimal("36100.00"));
+
+        Assertions.assertEquals(expected.getKey(), actual.getKey());
+        Assertions.assertEquals(expected.getValue(), actual.getValue());
+
     }
 
-    Comparator<Map.Entry<String, BigDecimal>> comparator = new Comparator<Map.Entry<String, BigDecimal>>() {
-        @Override
-        public int compare(Map.Entry<String, BigDecimal> e1, Map.Entry<String, BigDecimal> e2) {
-            return e1.getValue().compareTo(e2.getValue());
-        }
-    };
-
     @Test
-    void totalPrice() {
+    void calculateTotalPriceByCategoryByLowestPrice_34100_True() {
         List<Product> allProducts = productRepository.findAll();
-        Map<String, Product> filteredProducts = allProducts.stream()
+        BigDecimal actualTotalPrice = allProducts.stream()
             .collect(groupingBy(
                 i -> i.getCategory().getDisplayName(),
                 Collectors.collectingAndThen(
                     Collectors.minBy((Comparator.comparing(Product::getPrice))),
                     opt -> opt.orElse(null) // 상품이 없는 경우 Null
                 )
-            ));
-
-        BigDecimal totalPrice = filteredProducts.entrySet().stream().map(Map.Entry::getValue)
-            .map(Product::getPrice)
+            )).entrySet().stream().map(Map.Entry::getValue).map(Product::getPrice)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        Assertions.assertTrue(totalPrice.compareTo(BigDecimal.valueOf(34_100)) == 0);
+        BigDecimal expected = BigDecimal.valueOf(34_100);
+        ;
+        Assertions.assertEquals(0, (actualTotalPrice.compareTo(expected)));
     }
 
     @Test
-    void getMinMaxPriceByCategory(){
+    void calculateMinPriceByCategory_CategoryTop_10000() {
         List<Product> filteredProducts = productRepository.findAllByCategory(Category.TOP);
-        Product min = filteredProducts.stream().min((p1, p2) -> p1.getPrice().compareTo(p2.getPrice())).orElseThrow();
-        Product max = filteredProducts.stream().max((p1, p2) -> p1.getPrice().compareTo(p2.getPrice())).orElseThrow();
-
-        Assertions.assertTrue(min.getPrice().compareTo(BigDecimal.valueOf(10_000)) == 0);
-        Assertions.assertTrue("C".equals(min.getBrand().getName().toUpperCase()));
+        Product actual = Collections.min(filteredProducts, Comparator.comparing(Product::getPrice));
+        BigDecimal actualPrice = actual.getPrice();
+        BigDecimal expectedPrice = BigDecimal.valueOf(10_000);
+        Assertions.assertEquals(0, (actualPrice.compareTo(expectedPrice)));
     }
 
 }

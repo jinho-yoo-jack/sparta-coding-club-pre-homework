@@ -1,13 +1,13 @@
 package sparta.coding.club.prehomework.controller;
 
-import lombok.Getter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sparta.coding.club.prehomework.model.dto.RespLowestPrice;
-import sparta.coding.club.prehomework.model.dto.RespLowestProduct;
-import sparta.coding.club.prehomework.model.dto.RespMinMaxPrice;
+import sparta.coding.club.prehomework.global.ApiResponse;
+import sparta.coding.club.prehomework.model.dto.*;
 import sparta.coding.club.prehomework.service.ProductService;
 
 @RestController
@@ -18,13 +18,13 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/v1/lowest-products-by-category")
-    public ResponseEntity<RespLowestProduct> getLowestProductsByCategory() {
-        return ResponseEntity.ok(productService.fetchLowerProductByCategory());
+    public ResponseEntity<ApiResponse<RespLowestProduct>> getLowestProductsByCategory() {
+        return ResponseEntity.ok(ApiResponse.success(productService.fetchLowerProductByCategory()));
     }
 
     @GetMapping("/v1/lowest-price-by-brand")
-    public ResponseEntity<RespLowestPrice> getProductsAsOnlyOneCategory() {
-        return ResponseEntity.ok(productService.fetchLowestPriceByBrand());
+    public ResponseEntity<ApiResponse<RespLowestPrice>> getProductsAsOnlyOneCategory() {
+        return ResponseEntity.ok(ApiResponse.success(productService.fetchLowestPriceByBrand()));
     }
 
     @GetMapping("/v2/lowest-price-by-brand")
@@ -33,7 +33,8 @@ public class ProductController {
     }
 
     @GetMapping("/v1/min-max-price-by-category")
-    public ResponseEntity<RespMinMaxPrice> getMinMaxPriceBy(@RequestParam String category){
-        return ResponseEntity.ok(productService.fetchMinMaxPriceByCategory(category));
+    public ResponseEntity<RespMinMaxPrice> getMinMaxPriceBy(@Valid ReqMinMaxPrice message) {
+        return ResponseEntity.ok(productService.fetchMinMaxPriceByCategory(message.getCategory()));
     }
+
 }

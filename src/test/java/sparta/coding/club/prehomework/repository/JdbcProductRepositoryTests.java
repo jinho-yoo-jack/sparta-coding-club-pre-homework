@@ -1,5 +1,6 @@
 package sparta.coding.club.prehomework.repository;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -14,9 +15,9 @@ public class JdbcProductRepositoryTests {
     private JdbcProductRepository jdbcProductRepository;
 
     @Test
-    void getBrandIdTest(){
+    void findBrandIdByMinPriceGroupByBrand_normal_4(){
         BigInteger brandId = jdbcProductRepository.findBrandIdByMinPriceGroupByBrand();
-        System.out.println(brandId);
+        Assertions.assertEquals(new BigInteger("4"), brandId);
     }
 
 }

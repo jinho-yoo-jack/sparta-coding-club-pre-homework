@@ -2,7 +2,10 @@ package sparta.coding.club.prehomework.model.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import sparta.coding.club.prehomework.model.entity.Brand;
 import sparta.coding.club.prehomework.model.entity.Category;
 import sparta.coding.club.prehomework.model.entity.Product;
@@ -10,7 +13,10 @@ import sparta.coding.club.prehomework.model.entity.Product;
 import java.math.BigDecimal;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
+@Builder
 public class ReqCreateProduct {
     private String category;
     private String brandName;
